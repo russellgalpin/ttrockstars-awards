@@ -43,7 +43,7 @@ const headerColors = {
                 printMode ? '' : headerColors[awardLevel],
             ]"
         >
-            {{ table.tableNumber }}× Table
+
         </div>
 
         <!-- Questions list -->

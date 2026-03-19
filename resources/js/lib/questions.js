@@ -24,7 +24,7 @@ function generateId() {
  *
  * @param {number} tableNumber - The times table number (always in middle position)
  * @param {number} multiplier - The number to multiply by (first position)
- * @param {string} userInput - Which part the user needs to fill ('operand1' or 'answer', never 'operand2')
+ * @param {string} userInput - Which part the user needs to fill ('operand1', 'operand2', or 'answer')
  */
 function createMultiplicationQuestion(tableNumber, multiplier, userInput = 'answer') {
     const answer = tableNumber * multiplier;
@@ -32,7 +32,7 @@ function createMultiplicationQuestion(tableNumber, multiplier, userInput = 'answ
         id: generateId(),
         tableNumber,
         operand1: userInput === 'operand1' ? null : multiplier,
-        operand2: tableNumber, // Always show the table number
+        operand2: userInput === 'operand2' ? null : tableNumber,
         operator: '×',
         answer: userInput === 'answer' ? null : answer,
         correctAnswer: answer,
@@ -50,7 +50,7 @@ function createMultiplicationQuestion(tableNumber, multiplier, userInput = 'answ
  *
  * @param {number} tableNumber - The times table number (divisor, always shown)
  * @param {number} multiplier - The result of the division
- * @param {string} userInput - Which part the user needs to fill ('operand1' or 'answer', never 'operand2')
+ * @param {string} userInput - Which part the user needs to fill ('operand1', 'operand2', or 'answer')
  */
 function createDivisionQuestion(tableNumber, multiplier, userInput = 'answer') {
     const dividend = tableNumber * multiplier;
@@ -58,7 +58,7 @@ function createDivisionQuestion(tableNumber, multiplier, userInput = 'answer') {
         id: generateId(),
         tableNumber,
         operand1: userInput === 'operand1' ? null : dividend,
-        operand2: tableNumber, // Always show the table number (divisor)
+        operand2: userInput === 'operand2' ? null : tableNumber,
         operator: '÷',
         answer: userInput === 'answer' ? null : multiplier,
         correctAnswer: multiplier,
@@ -148,33 +148,55 @@ export function generateSilverQuestions() {
 
 /**
  * Generates Gold level questions
- * - All 12 tables in random order
- * - Questions in random order within each table
- * - Multiplication AND division mixed within the same table
- * - User can enter operand1 or answer (never operand2/table number)
+ * - 5 sets of 10 questions = 50 total
+ * - Each question draws from a random times table (1-12)
+ * - Multiplication and division mixed within each set
+ * - 3 operand1 + 3 operand2 + 4 answer input types per set (shuffled)
  */
 export function generateGoldQuestions() {
-    const allTables = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     const tables = [];
 
-    for (const table of allTables) {
-        const multipliers = shuffle([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    // Build pool of all possible questions and shuffle to guarantee uniqueness
+    const pool = [];
+    for (let table = 1; table <= 12; table++) {
+        for (let multiplier = 1; multiplier <= 12; multiplier++) {
+            pool.push({ tableNumber: table, multiplier, isMultiplication: true });
+            pool.push({ tableNumber: table, multiplier, isMultiplication: false });
+        }
+    }
+    const shuffledPool = shuffle(pool);
+
+    let poolIndex = 0;
+
+    for (let set = 1; set <= 5; set++) {
         const questions = [];
 
-        for (const multiplier of multipliers) {
-            const isMultiplication = Math.random() < 0.5;
-            // Only allow 'operand1' or 'answer', never 'operand2' (the table number)
-            const userInput = Math.random() < 0.33 ? 'operand1' : 'answer';
+        const userInputTypes = shuffle([
+            'operand1',
+            'operand1',
+            'operand1',
+            'operand2',
+            'operand2',
+            'operand2',
+            'answer',
+            'answer',
+            'answer',
+            'answer',
+        ]);
+
+        for (let i = 0; i < 10; i++) {
+            const { tableNumber, multiplier, isMultiplication } = shuffledPool[poolIndex++];
+            const userInput = userInputTypes[i];
 
             if (isMultiplication) {
-                questions.push(createMultiplicationQuestion(table, multiplier, userInput));
+                questions.push(createMultiplicationQuestion(tableNumber, multiplier, userInput));
             } else {
-                questions.push(createDivisionQuestion(table, multiplier, userInput));
+                questions.push(createDivisionQuestion(tableNumber, multiplier, userInput));
             }
         }
 
         tables.push({
-            tableNumber: table,
+            tableNumber: set,
             questions,
         });
     }
