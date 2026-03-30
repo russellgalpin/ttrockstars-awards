@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onUnmounted, watch } from 'vue';
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import Tabs from '@/components/ui/Tabs.vue';
 import Timer from '@/components/ui/Timer.vue';
 import Button from '@/components/ui/Button.vue';
@@ -12,6 +12,7 @@ import {
     generateSilverQuestions,
     generateGoldQuestions,
     calculateScore,
+    validateAnswer,
 } from '@/lib/questions.js';
 
 const page = usePage();
@@ -64,6 +65,14 @@ const awardTabs = [
 ];
 
 const flatQuestions = computed(() => tables.value.flatMap((t) => t.questions));
+
+const gridClass = computed(() => {
+    if (awardLevel.value === 'gold') {
+        return 'grid grid-cols-2 md:grid-cols-5 gap-2';
+    }
+
+    return 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2';
+});
 
 const bgGradient = computed(() => {
     const gradients = {
@@ -119,12 +128,23 @@ const endGame = () => {
     gameState.value = 'finished';
     showResults.value = true;
 
+    const answers = tables.value.flatMap((table) =>
+        table.questions.map((q) => ({
+            table_number: q.correctOperand2,
+            multiplier: q.operator === '×' ? q.correctOperand1 : q.correctAnswer,
+            operator: q.operator,
+            user_input_type: q.userInput,
+            is_correct: validateAnswer(q),
+        }))
+    );
+
     router.post('/attempts', {
         award_level: awardLevel.value,
         total_questions: score.value.total,
         correct_answers: score.value.correct,
         incorrect_answers: score.value.total - score.value.correct,
         time_remaining: timeRemaining.value,
+        answers,
     }, { preserveState: true, preserveScroll: true });
 };
 
@@ -286,6 +306,12 @@ onUnmounted(() => {
         ]">
             <!-- Header -->
             <header v-if="gameState !== 'playing'" class="text-center mb-4 relative">
+                <Link
+                    href="/stats"
+                    class="absolute left-0 top-0 text-sm text-indigo-600 hover:text-indigo-500 font-medium transition-colors"
+                >
+                    My Stats
+                </Link>
                 <button
                     @click="logout"
                     class="absolute right-0 top-0 text-sm text-gray-500 hover:text-gray-700 transition-colors"
@@ -352,6 +378,20 @@ onUnmounted(() => {
                 @answer-submitted="handleAnswerUpdate"
                 @all-answered="handleAllAnswered"
             />
+
+            <!-- Review answers (table grid) -->
+            <div
+                v-if="gameState === 'finished' && !showResults && tables.length > 0"
+                :class="gridClass"
+            >
+                <TableGrid
+                    v-for="table in tables"
+                    :key="table.tableNumber"
+                    :table="table"
+                    :show-results="true"
+                    :award-level="awardLevel"
+                />
+            </div>
 
             <!-- Results Screen -->
             <ResultsScreen

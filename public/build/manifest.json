@@ -1,6 +1,13 @@
 {
+  "_Tabs-C8YueK4t.js": {
+    "file": "assets/Tabs-C8YueK4t.js",
+    "name": "Tabs",
+    "imports": [
+      "resources/js/app.ts"
+    ]
+  },
   "resources/js/app.ts": {
-    "file": "assets/app-BrpIfJ88.js",
+    "file": "assets/app-BTs1vMvb.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -11,14 +18,15 @@
       "resources/js/pages/Auth/Register.vue",
       "resources/js/pages/Auth/ResetPassword.vue",
       "resources/js/pages/Game.vue",
+      "resources/js/pages/Stats.vue",
       "resources/js/pages/Welcome.vue"
     ],
     "css": [
-      "assets/app-D-pe4fSU.css"
+      "assets/app-BhqY4rOJ.css"
     ]
   },
   "resources/js/pages/Auth/ApprovalPending.vue": {
-    "file": "assets/ApprovalPending-Ds9FWs--.js",
+    "file": "assets/ApprovalPending-C5rof4F-.js",
     "name": "ApprovalPending",
     "src": "resources/js/pages/Auth/ApprovalPending.vue",
     "isDynamicEntry": true,
@@ -27,7 +35,7 @@
     ]
   },
   "resources/js/pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword-Dk8-UwFN.js",
+    "file": "assets/ForgotPassword-B1MNKrUT.js",
     "name": "ForgotPassword",
     "src": "resources/js/pages/Auth/ForgotPassword.vue",
     "isDynamicEntry": true,
@@ -36,7 +44,7 @@
     ]
   },
   "resources/js/pages/Auth/Login.vue": {
-    "file": "assets/Login-BvVnPPp1.js",
+    "file": "assets/Login-B-FJ-4nP.js",
     "name": "Login",
     "src": "resources/js/pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -45,7 +53,7 @@
     ]
   },
   "resources/js/pages/Auth/Register.vue": {
-    "file": "assets/Register-tZtVGGlJ.js",
+    "file": "assets/Register-24jtNtWs.js",
     "name": "Register",
     "src": "resources/js/pages/Auth/Register.vue",
     "isDynamicEntry": true,
@@ -54,7 +62,7 @@
     ]
   },
   "resources/js/pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword-B2hxMcYH.js",
+    "file": "assets/ResetPassword-Dcpi0pjC.js",
     "name": "ResetPassword",
     "src": "resources/js/pages/Auth/ResetPassword.vue",
     "isDynamicEntry": true,
@@ -63,19 +71,33 @@
     ]
   },
   "resources/js/pages/Game.vue": {
-    "file": "assets/Game-FsiuIyNU.js",
+    "file": "assets/Game-D8ra5R-r.js",
     "name": "Game",
     "src": "resources/js/pages/Game.vue",
     "isDynamicEntry": true,
     "imports": [
-      "resources/js/app.ts"
+      "resources/js/app.ts",
+      "_Tabs-C8YueK4t.js"
     ],
     "css": [
       "assets/Game-BDMfBZD4.css"
     ]
   },
+  "resources/js/pages/Stats.vue": {
+    "file": "assets/Stats-erDp0cFH.js",
+    "name": "Stats",
+    "src": "resources/js/pages/Stats.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "resources/js/app.ts",
+      "_Tabs-C8YueK4t.js"
+    ],
+    "css": [
+      "assets/Stats-DrTWcaHP.css"
+    ]
+  },
   "resources/js/pages/Welcome.vue": {
-    "file": "assets/Welcome-CqOz7JZ5.js",
+    "file": "assets/Welcome-D1PDnt5v.js",
     "name": "Welcome",
     "src": "resources/js/pages/Welcome.vue",
     "isDynamicEntry": true,

@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGameAttemptRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class GameAttemptsController extends Controller
 {
-    public function store(Request $request): RedirectResponse
+    public function store(StoreGameAttemptRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'award_level' => ['required', 'in:bronze,silver,gold'],
-            'total_questions' => ['required', 'integer', 'min:1'],
-            'correct_answers' => ['required', 'integer', 'min:0'],
-            'incorrect_answers' => ['required', 'integer', 'min:0'],
-            'time_remaining' => ['required', 'integer', 'min:0'],
-        ]);
+        $validated = $request->validated();
 
-        $request->user()->gameAttempts()->create($validated);
+        $attempt = $request->user()->gameAttempts()->create(
+            Arr::except($validated, ['answers'])
+        );
+
+        $attempt->answers()->createMany($validated['answers']);
 
         return back();
     }

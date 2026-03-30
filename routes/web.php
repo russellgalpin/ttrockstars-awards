@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\GameAttemptsController;
+use App\Http\Controllers\StatsController;
 use App\Http\Middleware\EnsureUserIsApproved;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -40,5 +41,6 @@ Route::middleware('auth')->group(function () {
         })->name('home');
 
         Route::post('/attempts', [GameAttemptsController::class, 'store'])->name('attempts.store');
+        Route::get('/stats', StatsController::class)->name('stats');
     });
 });
