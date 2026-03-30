@@ -1,6 +1,6 @@
 {
   "resources/js/app.ts": {
-    "file": "assets/app-B-MibrMb.js",
+    "file": "assets/app-BrpIfJ88.js",
     "name": "app",
     "src": "resources/js/app.ts",
     "isEntry": true,
@@ -18,7 +18,7 @@
     ]
   },
   "resources/js/pages/Auth/ApprovalPending.vue": {
-    "file": "assets/ApprovalPending-BqJbbgGV.js",
+    "file": "assets/ApprovalPending-Ds9FWs--.js",
     "name": "ApprovalPending",
     "src": "resources/js/pages/Auth/ApprovalPending.vue",
     "isDynamicEntry": true,
@@ -27,7 +27,7 @@
     ]
   },
   "resources/js/pages/Auth/ForgotPassword.vue": {
-    "file": "assets/ForgotPassword-0YKbddVN.js",
+    "file": "assets/ForgotPassword-Dk8-UwFN.js",
     "name": "ForgotPassword",
     "src": "resources/js/pages/Auth/ForgotPassword.vue",
     "isDynamicEntry": true,
@@ -36,7 +36,7 @@
     ]
   },
   "resources/js/pages/Auth/Login.vue": {
-    "file": "assets/Login-C_HGC443.js",
+    "file": "assets/Login-BvVnPPp1.js",
     "name": "Login",
     "src": "resources/js/pages/Auth/Login.vue",
     "isDynamicEntry": true,
@@ -45,7 +45,7 @@
     ]
   },
   "resources/js/pages/Auth/Register.vue": {
-    "file": "assets/Register-DnSa3LaT.js",
+    "file": "assets/Register-tZtVGGlJ.js",
     "name": "Register",
     "src": "resources/js/pages/Auth/Register.vue",
     "isDynamicEntry": true,
@@ -54,7 +54,7 @@
     ]
   },
   "resources/js/pages/Auth/ResetPassword.vue": {
-    "file": "assets/ResetPassword-BzIRwWCh.js",
+    "file": "assets/ResetPassword-B2hxMcYH.js",
     "name": "ResetPassword",
     "src": "resources/js/pages/Auth/ResetPassword.vue",
     "isDynamicEntry": true,
@@ -63,7 +63,7 @@
     ]
   },
   "resources/js/pages/Game.vue": {
-    "file": "assets/Game-8Qm2teIv.js",
+    "file": "assets/Game-FsiuIyNU.js",
     "name": "Game",
     "src": "resources/js/pages/Game.vue",
     "isDynamicEntry": true,
@@ -75,7 +75,7 @@
     ]
   },
   "resources/js/pages/Welcome.vue": {
-    "file": "assets/Welcome-CaEd2Xz1.js",
+    "file": "assets/Welcome-CqOz7JZ5.js",
     "name": "Welcome",
     "src": "resources/js/pages/Welcome.vue",
     "isDynamicEntry": true,

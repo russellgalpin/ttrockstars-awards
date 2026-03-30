@@ -328,18 +328,15 @@ onUnmounted(() => {
                     </div>
                 </template>
 
+                <template v-else-if="gameState === 'playing'">
+                    <Timer :seconds="timeRemaining" :total-seconds="totalTime" />
+                </template>
+
                 <template v-else>
                     <div class="flex items-center gap-6">
                         <Timer :seconds="timeRemaining" :total-seconds="totalTime" />
                         <div class="flex gap-2">
-                            <Button
-                                v-if="gameState === 'finished'"
-                                :variant="awardLevel"
-                                size="md"
-                                @click="playAgain"
-                            >
-                                Play Again
-                            </Button>
+                            <Button :variant="awardLevel" size="md" @click="playAgain">Play Again</Button>
                             <Button variant="secondary" size="md" @click="printTables">Print</Button>
                             <Button variant="secondary" size="md" @click="printBatch">Print 10</Button>
                         </div>

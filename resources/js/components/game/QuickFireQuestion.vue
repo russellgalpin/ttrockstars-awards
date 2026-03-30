@@ -143,7 +143,7 @@ onUnmounted(() => {
         <!-- Keypad -->
         <div class="grid grid-cols-3 gap-2 w-full max-w-xs mx-auto shrink-0 pb-2">
             <button
-                v-for="digit in [1, 2, 3, 4, 5, 6, 7, 8, 9]"
+                v-for="digit in [7, 8, 9, 4, 5, 6, 1, 2, 3]"
                 :key="digit"
                 @click="pressDigit(String(digit))"
                 class="aspect-square text-2xl md:text-3xl font-bold rounded-xl bg-white border-2 border-gray-200 text-gray-800 hover:bg-gray-50 active:bg-gray-100 transition-colors select-none shadow-sm touch-manipulation"
