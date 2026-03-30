@@ -274,10 +274,18 @@ onUnmounted(() => {
     </div>
 
     <!-- Screen version -->
-    <div :class="['min-h-screen bg-gradient-to-br p-4', bgGradient, isPrinting ? 'screen-only' : '']">
-        <div class="max-w-7xl mx-auto">
+    <div :class="[
+        'bg-gradient-to-br p-4',
+        bgGradient,
+        isPrinting ? 'screen-only' : '',
+        gameState === 'playing' ? 'h-dvh flex flex-col overflow-hidden' : 'min-h-screen',
+    ]">
+        <div :class="[
+            'max-w-7xl mx-auto',
+            gameState === 'playing' ? 'flex flex-col flex-1 min-h-0' : '',
+        ]">
             <!-- Header -->
-            <header class="text-center mb-4 relative">
+            <header v-if="gameState !== 'playing'" class="text-center mb-4 relative">
                 <button
                     @click="logout"
                     class="absolute right-0 top-0 text-sm text-gray-500 hover:text-gray-700 transition-colors"
@@ -289,12 +297,15 @@ onUnmounted(() => {
             </header>
 
             <!-- Award Level Tabs -->
-            <div class="max-w-md mx-auto mb-4">
+            <div v-if="gameState !== 'playing'" class="max-w-md mx-auto mb-4">
                 <Tabs v-model="awardLevel" :tabs="awardTabs" />
             </div>
 
             <!-- Game Controls -->
-            <div class="flex flex-col items-center gap-4 mb-4">
+            <div :class="[
+                'flex flex-col items-center',
+                gameState === 'playing' ? 'gap-2 mb-2 shrink-0' : 'gap-4 mb-4',
+            ]">
                 <template v-if="gameState === 'idle'">
                     <div class="text-center">
                         <p class="text-gray-600 mb-2 text-sm">
