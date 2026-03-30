@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed, onUnmounted, watch } from 'vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import Tabs from '@/components/ui/Tabs.vue';
 import Timer from '@/components/ui/Timer.vue';
 import Button from '@/components/ui/Button.vue';
 import TableGrid from '@/components/game/TableGrid.vue';
+import QuickFireQuestion from '@/components/game/QuickFireQuestion.vue';
 import ResultsScreen from '@/components/game/ResultsScreen.vue';
 import {
     generateBronzeQuestions,
@@ -12,6 +13,12 @@ import {
     generateGoldQuestions,
     calculateScore,
 } from '@/lib/questions.js';
+
+const page = usePage();
+
+const logout = () => {
+    router.post('/logout');
+};
 
 const awardConfig = {
     bronze: { totalTime: 360, totalQuestions: 144 },
@@ -56,13 +63,7 @@ const awardTabs = [
     { value: 'gold', label: 'Gold' },
 ];
 
-const gridClass = computed(() => {
-    if (awardLevel.value === 'gold') {
-        return 'grid grid-cols-2 md:grid-cols-5 gap-2';
-    }
-
-    return 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2';
-});
+const flatQuestions = computed(() => tables.value.flatMap((t) => t.questions));
 
 const bgGradient = computed(() => {
     const gradients = {
@@ -117,9 +118,17 @@ const endGame = () => {
     score.value = calculateScore(tables.value);
     gameState.value = 'finished';
     showResults.value = true;
+
+    router.post('/attempts', {
+        award_level: awardLevel.value,
+        total_questions: score.value.total,
+        correct_answers: score.value.correct,
+        incorrect_answers: score.value.total - score.value.correct,
+        time_remaining: timeRemaining.value,
+    }, { preserveState: true, preserveScroll: true });
 };
 
-const submitAnswers = () => {
+const handleAllAnswered = () => {
     endGame();
 };
 
@@ -268,7 +277,13 @@ onUnmounted(() => {
     <div :class="['min-h-screen bg-gradient-to-br p-4', bgGradient, isPrinting ? 'screen-only' : '']">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
-            <header class="text-center mb-4">
+            <header class="text-center mb-4 relative">
+                <button
+                    @click="logout"
+                    class="absolute right-0 top-0 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                    Sign out ({{ page.props.auth?.user?.name }})
+                </button>
                 <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-1">Times Table Challenge</h1>
                 <p class="text-gray-600">Earn your award by completing all questions correctly!</p>
             </header>
@@ -307,15 +322,7 @@ onUnmounted(() => {
                         <Timer :seconds="timeRemaining" :total-seconds="totalTime" />
                         <div class="flex gap-2">
                             <Button
-                                v-if="gameState === 'playing'"
-                                variant="primary"
-                                size="md"
-                                @click="submitAnswers"
-                            >
-                                Submit
-                            </Button>
-                            <Button
-                                v-else
+                                v-if="gameState === 'finished'"
                                 :variant="awardLevel"
                                 size="md"
                                 @click="playAgain"
@@ -329,20 +336,14 @@ onUnmounted(() => {
                 </template>
             </div>
 
-            <!-- Tables Grid -->
-            <div
-                v-if="tables.length > 0"
-                :class="gridClass"
-            >
-                <TableGrid
-                    v-for="table in tables"
-                    :key="table.tableNumber"
-                    :table="table"
-                    :show-results="showResults && gameState === 'finished'"
-                    :award-level="awardLevel"
-                    @update:answer="handleAnswerUpdate"
-                />
-            </div>
+            <!-- Quick-fire question display -->
+            <QuickFireQuestion
+                v-if="gameState === 'playing' && flatQuestions.length > 0"
+                :questions="flatQuestions"
+                :award-level="awardLevel"
+                @answer-submitted="handleAnswerUpdate"
+                @all-answered="handleAllAnswered"
+            />
 
             <!-- Results Screen -->
             <ResultsScreen

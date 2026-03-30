@@ -232,19 +232,30 @@ export function validateAnswer(question) {
 export function calculateScore(tables) {
     let correct = 0;
     let total = 0;
+    let answered = 0;
 
     for (const table of tables) {
         for (const question of table.questions) {
             total++;
-            if (validateAnswer(question)) {
-                correct++;
+            const hasAnswer = question.userValue !== null && question.userValue !== undefined && String(question.userValue).trim() !== '';
+            if (hasAnswer) {
+                answered++;
+                if (validateAnswer(question)) {
+                    correct++;
+                }
             }
         }
     }
 
+    const incorrect = answered - correct;
+    const unanswered = total - answered;
+
     return {
         correct,
         total,
+        answered,
+        incorrect,
+        unanswered,
         percentage: Math.round((correct / total) * 100),
     };
 }

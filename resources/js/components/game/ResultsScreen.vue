@@ -71,12 +71,23 @@ const bgGradient = computed(() => {
 
             <!-- Content -->
             <div class="p-6 text-center">
-                <div class="mb-6">
+                <div class="mb-4">
                     <div class="text-5xl font-bold text-gray-800 mb-2">
                         {{ score.correct }}/{{ score.total }}
                     </div>
                     <div class="text-xl text-gray-600">
                         {{ score.percentage }}% Correct
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-6 max-w-xs mx-auto text-sm">
+                    <div class="bg-red-50 rounded-lg p-3">
+                        <div class="text-2xl font-bold text-red-600">{{ score.incorrect }}</div>
+                        <div class="text-red-500">Incorrect</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <div class="text-2xl font-bold text-gray-600">{{ score.unanswered }}</div>
+                        <div class="text-gray-500">Not Answered</div>
                     </div>
                 </div>
 
